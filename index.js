@@ -1,8 +1,8 @@
 const express = require("express");
-// const cors = require("cors");
 const dbConfig = require("./app/config/db.config");
 require("dotenv").config();
 const app = express();
+// const cors = require("cors");
 
 app.use((req, res, next) => {
   res.header({ "Access-Control-Allow-Origin": "*" });
