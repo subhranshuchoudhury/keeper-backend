@@ -20,7 +20,7 @@ module.exports = function (app) {
 
   // user keep get route
 
-  app.get("/api/user/keep", [authJwt.verifyToken], controller.getKeep);
+  app.get("/api/user/keep/:id", [authJwt.verifyToken], controller.getKeep);
 
   // user keep put
 
