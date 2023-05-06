@@ -210,7 +210,7 @@ exports.userKeepEngagement = async (req, res) => {
 // check the x-access-token verified or not
 
 exports.isVerified = (req, res) => {
-  res.status(200).send({ message: "verified" });
+  res.status(200).send({ success: true });
 };
 
 // exports.userBoard = (req, res) => {
