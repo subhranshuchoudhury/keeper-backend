@@ -31,7 +31,7 @@ exports.keeps = (req, res) => {
 // particular keep
 
 exports.getKeep = (req, res) => {
-  if (!req.params.keepId || req.params.keepId === "") {
+  if (!req.params.id || req.params.id === "") {
     res.status(400).json({
       message: "keep id is missing",
     });
@@ -44,7 +44,7 @@ exports.getKeep = (req, res) => {
       // Unwind the 'keeps' array to get a separate document for each 'keep'
       { $unwind: "$keeps" },
       // Match the documents in the 'keeps' array that have the specified _id
-      { $match: { "keeps._id": mongoose.Types.ObjectId(req.params.keepId) } },
+      { $match: { "keeps._id": mongoose.Types.ObjectId(req.params.id) } },
       { $group: { _id: "$_id", keeps: { $push: "$keeps" } } },
     ],
     (err, result) => {
