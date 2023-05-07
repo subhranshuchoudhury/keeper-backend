@@ -64,7 +64,7 @@ exports.getKeep = (req, res) => {
 
 exports.createKeep = (req, res) => {
   if (
-    !req.params.title ||
+    !req.body.title ||
     req.body.title === "" ||
     !req.body.content ||
     req.body.content === ""
