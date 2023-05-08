@@ -30,6 +30,12 @@ module.exports = function (app) {
 
   app.delete("/api/user/keep", [authJwt.verifyToken], controller.deleteKeep);
 
+  app.delete(
+    "/api/user/keep-new",
+    [authJwt.verifyToken],
+    controller.deleteKeepNew
+  );
+
   // user engagements
 
   app.post(

@@ -137,7 +137,47 @@ exports.updateKeep = (req, res) => {
 
 // delete user's keep
 
-exports.deleteKeep = async (req, res) => {
+exports.deleteKeep = (req, res) => {
+  if (!req.body.reqid || req.body.reqid === "") {
+    res.status(400).json({
+      message: "request unsuccessful, empty field",
+    });
+    return;
+  }
+  const request_id = req.body.reqid;
+  const userId = req.userId;
+  const title = "";
+  const content = "";
+  const timestamp = "";
+  User.updateOne(
+    { _id: userId, "keeps._id": request_id },
+    {
+      $unset: {
+        "keeps.$[keep]": {
+          title,
+          content,
+          timestamp,
+        },
+      },
+    },
+    {
+      arrayFilters: [
+        {
+          "keep._id": request_id,
+        },
+      ],
+    },
+    (err) => {
+      if (err) {
+        res.status(500).json("request not saved");
+      } else {
+        res.status(200).json("request saved");
+      }
+    }
+  );
+};
+
+exports.deleteKeepNew = async (req, res) => {
   if (!req.body.reqid || req.body.reqid === "") {
     res.status(400).json({
       message: "request unsuccessful, empty field",
