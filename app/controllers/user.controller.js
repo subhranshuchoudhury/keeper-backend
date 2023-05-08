@@ -137,44 +137,33 @@ exports.updateKeep = (req, res) => {
 
 // delete user's keep
 
-exports.deleteKeep = (req, res) => {
+exports.deleteKeep = async (req, res) => {
   if (!req.body.reqid || req.body.reqid === "") {
     res.status(400).json({
       message: "request unsuccessful, empty field",
     });
     return;
   }
-  const request_id = req.body.reqid;
-  const userId = req.userId;
-  const title = "";
-  const content = "";
-  const timestamp = "";
-  User.updateOne(
-    { _id: userId, "keeps._id": request_id },
-    {
-      $unset: {
-        "keeps.$[keep]": {
-          title,
-          content,
-          timestamp,
-        },
-      },
-    },
-    {
-      arrayFilters: [
-        {
-          "keep._id": request_id,
-        },
-      ],
-    },
-    (err) => {
-      if (err) {
-        res.status(500).json("request not saved");
-      } else {
-        res.status(200).json("request saved");
-      }
+  try {
+    const user = await User.findById(req.userId);
+
+    // Check if user has a keep with the specified ID
+    const keepIndex = user.keeps.findIndex(
+      (keep) => keep._id === req.body.reqid
+    );
+    if (keepIndex === -1) {
+      return res.status(404).json({ message: "Keep not found" });
     }
-  );
+
+    // Remove the keep from the user's keeps array
+    user.keeps.pull({ _id: req.body.reqid });
+    await user.save();
+
+    return res.json({ message: "Keep deleted" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
 };
 
 // engagement from user
