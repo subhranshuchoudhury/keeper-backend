@@ -4,7 +4,7 @@ const Share = db.share;
 exports.saveShare = (req, res) => {
   const share = new Share({
     title: req.body.title,
-    content: req.body.title,
+    content: req.body.content,
     timestamp: req.body.timestamp,
     sharedon: new Date().getTime(),
     creator: req.body.creator,
